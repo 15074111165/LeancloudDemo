@@ -13,6 +13,8 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 
+import java.util.Properties;
+
 /**
  * Created by chenliupushishabi on 2016/8/24.
  */
@@ -22,13 +24,45 @@ public class LeancloudApp extends Application {
     public static String installationId;
 
     public static boolean isRevice=true;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         mContext=getApplicationContext();
         initLeancloud();
+        Properties properties=null;
+        if(BuildConfig.DEBUG){
+            properties=getDebugProperties();
+        }else{
+            properties=getReleaseProperties();
+        }
+
+        AppProperties.show= (String) properties.get("show");
+
+    }
 
 
+    public Properties getReleaseProperties(){
+        return getProperties("release.properties");
+    }
+
+
+    public Properties getDebugProperties(){
+        return getProperties("debug.properties");
+    }
+
+
+    private  Properties getProperties(String propertiesName) {
+        String url = null;
+        Properties properties = new Properties();
+        try {
+            properties.load(getAssets().open(propertiesName));
+            return properties;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

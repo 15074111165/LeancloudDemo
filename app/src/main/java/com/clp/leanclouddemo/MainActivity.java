@@ -1,27 +1,18 @@
 package com.clp.leanclouddemo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private TextView show;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.regis).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LeancloudApp.isRevice=true;
-            }
-        });
-
-        findViewById(R.id.un).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LeancloudApp.isRevice=false;
-            }
-        });
+        show= (TextView) findViewById(R.id.regis);
+        show.setText(AppProperties.show);
     }
 }

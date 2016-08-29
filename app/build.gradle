@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        LeancloudDemo {
+            keyAlias 'LeancloudDemo'
+            keyPassword '000000'
+            storeFile file('E:/workspace/key_store/leancloudDemo.jks')
+            storePassword '000000'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.clp.leanclouddemo"
         minSdkVersion 14
@@ -14,15 +21,35 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 
-    packagingOptions{
+        }
+
+
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            versionNameSuffix "-debug"
+            minifyEnabled false
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            signingConfig signingConfigs.LeancloudDemo
+        }
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled false
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.LeancloudDemo
+        }
+
+    }
+    packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
-
     lintOptions {
         abortOnError false
     }
@@ -35,7 +62,6 @@ dependencies {
     compile files('libs/avoscloud-push-v3.14.3.jar')
     compile files('libs/avoscloud-sdk-v3.14.3.jar')
     compile files('libs/protobuf-java-2.6.1.jar')
-
     compile files('libs/fastjson.jar')
     compile files('libs/Java-WebSocket-1.3.2-leancloud.jar')
     compile files('libs/okhttp-2.6.0-leancloud.jar')
